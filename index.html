@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Cash-Flow - Personal Salary and Expense Tracker with local persistence, analytics, and PDF reports.">
+  <title>Cash-Flow | Salary & Expense Tracker</title>
+  
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+  
+  <!-- External Libraries (Chart.js for visualizations, jsPDF for PDF export) -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body>
+  <main class="container">
+    <!-- Header Section -->
+    <header class="hero">
+      <div class="hero-text">
+        <p class="eyebrow">SPRINT 02 · LOGIC &amp; DATA</p>
+        <h1>Cash-Flow</h1>
+        <p class="subtitle">Salary &amp; Expense Tracker</p>
+      </div>
+      <button id="clearDataBtn" class="btn danger-outline" type="button" title="Reset all tracker data">
+        Clear Data
+      </button>
+    </header>
+
+    <!-- Threshold Alert Banner (Hidden by default, displayed on negative balance or <10% remaining) -->
+    <section id="alertBanner" class="alert hidden" role="alert" aria-live="polite"></section>
+
+    <!-- Financial Summary Cards -->
+    <section class="summary" aria-label="Financial Summary">
+      <article class="card">
+        <span>Total Salary</span>
+        <strong id="salaryDisplay">₹0.00</strong>
+      </article>
+
+      <article class="card">
+        <span>Total Expenses</span>
+        <strong id="expenseDisplay">₹0.00</strong>
+      </article>
+
+      <article class="card">
+        <span>Remaining Balance</span>
+        <strong id="balanceDisplay">₹0.00</strong>
+      </article>
+    </section>
+
+    <!-- Data Input Forms -->
+    <section class="forms">
+      <!-- Set Salary Form -->
+      <article class="panel">
+        <h2>Set Salary</h2>
+        <form id="salaryForm" novalidate>
+          <div class="form-group">
+            <label for="salary">Total Monthly Salary</label>
+            <input 
+              id="salary" 
+              name="salary" 
+              type="number" 
+              min="0" 
+              step="0.01" 
+              placeholder="e.g. 30000" 
+              required
+            >
+          </div>
+          <button class="btn" type="submit">Save Salary</button>
+          <p id="salaryError" class="error" aria-live="polite"></p>
+        </form>
+      </article>
+
+      <!-- Add Expense Form -->
+      <article class="panel">
+        <h2>Add Expense</h2>
+        <form id="expenseForm" novalidate>
+          <div class="form-group">
+            <label for="expenseName">Expense Name</label>
+            <input 
+              id="expenseName" 
+              name="expenseName" 
+              type="text" 
+              placeholder="e.g. Rent, Groceries, Electricity" 
+              required
+            >
+          </div>
+          <div class="form-group">
+            <label for="expenseAmount">Expense Amount</label>
+            <input 
+              id="expenseAmount" 
+              name="expenseAmount" 
+              type="number" 
+              min="0" 
+              step="0.01" 
+              placeholder="e.g. 8000" 
+              required
+            >
+          </div>
+          <button class="btn" type="submit">Add Expense</button>
+          <p id="expenseError" class="error" aria-live="polite"></p>
+        </form>
+      </article>
+    </section>
+
+    <!-- Content: Expense List & Interactive Chart -->
+    <section class="content">
+      <!-- Expense List Panel -->
+      <article class="panel">
+        <div class="panel-heading">
+          <h2>Expense List</h2>
+          <button id="downloadBtn" class="btn small" type="button" title="Download report as PDF">
+            Download Report
+          </button>
+        </div>
+        <ul id="expenseList" class="expense-list" aria-label="Itemized Expenses"></ul>
+        <p id="emptyState" class="muted">No expenses added yet.</p>
+      </article>
+
+      <!-- Chart Overview Panel -->
+      <article class="panel">
+        <h2>Expense Overview</h2>
+        <div class="chart-wrap">
+          <canvas id="expenseChart" aria-label="Salary vs Expense breakdown pie chart"></canvas>
+        </div>
+      </article>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+      <p>Vanilla JavaScript · LocalStorage · Chart.js · jsPDF</p>
+    </footer>
+  </main>
+
+  <!-- Application Logic -->
+  <script src="script.js"></script>
+</body>
+</html>
